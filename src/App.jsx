@@ -1,21 +1,22 @@
-import React from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import Login from './pages/Login';
-import AdminLayout from './components/AdminLayout';
-import { UserLayout } from './components/UserLayout';
-import AdminDashboard from './pages/AdminDashboard';
-import ManageUsers from './pages/ManageUsers';
-import { ManageFolder } from './pages/ManageFolder';
-import { ManageImages } from './pages/ManageImages';
-import UserDashboard from './pages/UserDashboard';
-import Folder from './pages/Folder';
-import PackageDetails from './components/PackageDetails';
+import Login from "./pages/Login";
+import AdminLayout from "./pages/Admin/AdminLayout";
+import { UserLayout } from "./pages/User/UserLayout";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import ManageUsers from "./pages/Admin/ManageUsers";
+import { ManageFolder } from "./pages/Admin/ManageFolder";
+import { ManageImages } from "./pages/Admin/ManageImages";
+import UserDashboard from "./pages/User/UserDashboard";
+import Folder from "./pages/User/Folder";
+import PackageDetails from "./pages/User/PackageDetails";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Navigate replace to="admin/" />} />
         <Route path="admin/*" element={<AdminLayout />}>
           <Route index element={<Navigate replace to="dashboard" />} />
           <Route path="dashboard" element={<AdminDashboard />} />
