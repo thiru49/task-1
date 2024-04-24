@@ -1,31 +1,36 @@
 import React, { useState } from "react";
-import Button from "../components/Button/Button";
-import Input from "../components/Input/Input";
-import axios from "axios";
-import { login } from "../services/Index";
+import Button from "../../components/Button/Button";
+import Input from "../../components/Input/Input";
+import { login } from "../../services/Index";
 import toast from "react-hot-toast";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import SpinnerMini from "../../components/spinnerMini/SpinnerMini";
 
 const Login = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const response = await login(user);
 
       if (response.status === 200) {
         sessionStorage.setItem("userData", JSON.stringify(response.data));
         toast.success("User Successfully login");
-        navigate('/admin')
+        setLoading(false);
+        navigate("/admin");
       } else {
         console.log("Unexpected status code:", response.status);
         toast.error(`Unexpected status code: ${response.status}`);
+        setLoading(false);
       }
     } catch (error) {
       console.log("Login failed:", error.message);
+      setLoading(false);
       toast.error(`${error.message}`);
       setUser((prevUser) => ({
         ...prevUser,
@@ -50,6 +55,7 @@ const Login = () => {
           onChange={onChange}
           name="email"
           type="text"
+          disabled={loading}
         />
         <Input
           label="Password"
@@ -57,9 +63,17 @@ const Login = () => {
           onChange={onChange}
           name="password"
           type="password"
+          disabled={loading}
         />
         <div className="flex justify-center">
-          <Button onClick={handleLogin}>Login</Button>
+          <Button
+            onClick={handleLogin}
+            disabled={loading}
+            className="bg-sky-600 flex justify-center items-center"
+          >
+            {loading && <SpinnerMini />}
+            <span className="text-sky-50 font-bold">Login</span>
+          </Button>
         </div>
       </div>
     </section>

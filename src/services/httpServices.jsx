@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const instance = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}`,
   timeout: 500000,
@@ -9,12 +10,23 @@ const instance = axios.create({
     "Access-Control-Allow-Origin": "*",
   },
 });
-
-
-
+/* // Add a request interceptor
+instance.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  const token = JSON.parse(sessionStorage.getItem("userData"));
+  console.log(token.token)
+  return {
+    ...config,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Bearer ${token.token}`,
+    },
+  };
+}); */
 const requests = {
   post: (url, body, headers) =>
     instance.post(url, body, headers)
 };
 
 export default requests;
+

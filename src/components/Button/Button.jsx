@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Button = ({children,type,onClick,className}) => {
+const Button = ({children,type,onClick,className,disabled}) => {
   return (
-    <button  className={`bg-sky-700 text-sky-100 rounded-md py-2 px-8 hover:scale-90 transition-all ${className}`} type={type} onClick={onClick}>{children}</button>
+    <button disabled={disabled}  className={`rounded-md py-0.5 px-2 hover:scale-90 transition-all ${className} ${disabled ? 'bg-red-500':""}`} type={type} onClick={onClick}>{children}</button>
   )
 }
 
