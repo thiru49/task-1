@@ -1,21 +1,77 @@
-import { Modal } from "antd";
-import React, { useRef, useState } from "react";
+import Modal from './Modal';
+import React, {  useContext, useEffect, useRef, useState } from "react";
 import { HiFolderAdd } from "react-icons/hi";
-import Input from "../../components/Input/Input";
+import Input from "../../../components/Input/Input";
 import { useForm } from "react-hook-form";
-import Button from "../../components/Button/Button";
-import { imageUpload } from "../../services/Index";
+import Button from "../../../components/Button/Button";
+
 import toast from "react-hot-toast";
+import FsLightbox from 'fslightbox-react';
+import imagesArray from '../../../assets/assets';
+import { getImageUpload } from '../../../services/Index';
+
 
 export const ManageImages = () => {
+    const [toggler, setToggler] = useState(false);
+    const [slide,setSlide] = useState(1)
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState([]);
+   /*  useEffect(() => {
+      const fetchImage = async () => {
+        try {
+          setLoading(true);
+          const response = await getImageUpload();
+  
+          if (response.status === 200) {
+            console.log(response.data);
+            setData(response.data);
+            toast.success(`${response.data.message}`);
+          } else {
+            console.log("Unexpected status code:", response.status);
+            toast.error(`Unexpected status code: ${response.status}`);
+          }
+        } catch (error) {
+          console.error("API error:", error);
+          toast.error(`API error: ${error.message}`);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchImage();
+    }, [])
+    console.log(data)  */
+    return (
+    <div>
+      <Modal>
+        <Modal.Open opens='create-image'>
+      <h1 className="text-xl text-sky-900 font-bold flex justify-center items-center gap-4 mt-5">
+        <span>Create Image</span>
+        <Button><HiFolderAdd className="w-8 h-8"/></Button>
+      </h1>
+      </Modal.Open>
+      <Modal.Window name='create-image'>
+       <ImageForm/>
+      </Modal.Window>
+      </Modal> 
+      <div className='grid grid-cols-4 border-black border-4 gap-2 h-[500px]'>
+      {imagesArray.map((item,index)=>(<div key={index} className='relative overflow-hidden' onClick={()=>{setSlide(item.id)
+      setToggler(!toggler)}}>
+        <img src={item.src} className='w-full h-full object-center'/>
+        </div>))}
+      </div>
+    </div>
+  );
+};
+
+const ImageForm = ({onCloseModel})=>{
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState("");
-  const { handleSubmit, register, formState, reset } = useForm();
-  const { errors } = formState;
   const inputRef = useRef();
   let file = new FormData();
-
+  const { handleSubmit, register, formState, reset } = useForm();
+  const { errors } = formState;
   const onSubmit = async (data) => {
     console.log(data);
     reset();
@@ -31,6 +87,7 @@ export const ManageImages = () => {
       if (response.status === 200) {
         console.log(response.data);
         toast.success(`${response.data.message}`);
+        onCloseModel?.()
       } else {
         console.log(response);
         console.log("Unexpected status code:", response.status);
@@ -42,25 +99,12 @@ export const ManageImages = () => {
       toast.error(`API error: ${error.message}`);
     } finally {
       setLoading(false);
-      setModalOpen(false);
+      onCloseModel?.()
+
     }
   };
-
-  return (
-    <div>
-      <h1 className="text-xl text-sky-900 font-bold flex justify-center items-center gap-4 mt-5">
-        <span>Create Image</span>
-        <HiFolderAdd className="w-8 h-8" onClick={() => setModalOpen(true)} />
-      </h1>
-      <Modal
-        title="Create Image"
-        centered
-        open={modalOpen}
-        onCancel={() => setModalOpen(false)}
-        onOk={handleSubmit(onSubmit)}
-        footer // Trigger form submission
-      >
-        <div className="bg-sky-200 rounded-sm shadow-sm p-2 my-4 flex flex-col gap-2">
+  return(
+    <div className="bg-sky-200 rounded-sm shadow-sm p-2 my-4 flex flex-col gap-2">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-2"
@@ -95,13 +139,12 @@ export const ManageImages = () => {
               <Button
                 className="bg-red-400 border-none text-white"
                 type="submit"
+
               >
                 Submit
               </Button>
             </div>
           </form>
         </div>
-      </Modal>
-    </div>
-  );
-};
+  )
+}

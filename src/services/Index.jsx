@@ -16,3 +16,7 @@ export const signUp= async (data) => {
 export const imageUpload= async (data) => {
   return await requests.post(`/api/uploads/store`, data);
 };
+// Get Image Upload
+export const getImageUpload= async () => {
+  return await requests.get(`/api/uploads`);
+};

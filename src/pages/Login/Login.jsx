@@ -19,7 +19,8 @@ const Login = () => {
       const response = await login(user);
 
       if (response.status === 200) {
-        sessionStorage.setItem("userData", JSON.stringify(response.data));
+        sessionStorage.setItem("userData", JSON.stringify(response.data.user));
+        sessionStorage.setItem("token", JSON.stringify(response.data.token));
         toast.success("User Successfully login");
         setLoading(false);
         navigate("/admin");

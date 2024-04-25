@@ -10,18 +10,19 @@ function Header() {
   const navigate = useNavigate()
   const logout = ()=>{
     sessionStorage.removeItem('userData');
+    sessionStorage.removeItem('token');
     navigate('/login')
     toast.success('user successfully logout')
   }
-  console.log(user)
+
   return (
     <>
-      <Button className="bg-blue-500 px-5 relative group">
+      <Button className="bg-blue-500 px-2 py-2 relative group">
         <HiOutlineUser />
-        <h1 className="font-bold absolute -bottom-[55px] -left-10 transform translate-x-1/2 -translate-y-full text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100">{user.user.name}</h1>
+        <h1 className="font-bold absolute -bottom-[55px] -left-10 transform translate-x-1/2 -translate-y-full text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100">{user?.name}</h1>
       </Button>
       
-      <Button className="group relative bg-red-800 px-5 mx-5" onClick={logout}>
+      <Button className="group relative bg-red-800 px-2 py-2 mx-5" onClick={logout}>
         <HiArrowRightOnRectangle />
         <h1 className="font-bold absolute -bottom-[55px] -left-10 transform translate-x-1/2 -translate-y-full text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100">Logout</h1>
       </Button>

@@ -7,7 +7,7 @@ import { UserLayout } from "./pages/User/UserLayout";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ManageUsers from "./pages/Admin/ManageUsers";
 import { ManageFolder } from "./pages/Admin/ManageFolder";
-import { ManageImages } from "./pages/Admin/ManageImages";
+import { ManageImages } from "./pages/Admin/ManageImages/ManageImages";
 import UserDashboard from "./pages/User/UserDashboard";
 import Folder from "./pages/User/Folder";
 import PackageDetails from "./pages/User/PackageDetails";
