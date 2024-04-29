@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 
-const Input = forwardRef(({accept,disabled, label, error, type, className, placeholder, value, onChange, id, name, register }, ref) => {
+const Input = forwardRef(({select,field,accept,disabled, label, error, type, className, placeholder, value, onChange, id, name, register }, ref) => {
   return (
     <div className="grid grid-cols-3 text-sky-800 font-bold gap-4 transition-all">
       {label && (
@@ -8,7 +8,7 @@ const Input = forwardRef(({accept,disabled, label, error, type, className, place
           {label}
         </label>
       )}
-      <input
+     <input
         disabled={disabled}
         accept={accept}
         ref={ref}

@@ -8,7 +8,7 @@ import Button from "../../../components/Button/Button";
 import toast from "react-hot-toast";
 import FsLightbox from 'fslightbox-react';
 import imagesArray from '../../../assets/assets';
-import { getImageUpload } from '../../../services/Index';
+import { getImageUpload, imageUpload } from '../../../services/Index';
 
 
 export const ManageImages = () => {
@@ -16,7 +16,8 @@ export const ManageImages = () => {
     const [slide,setSlide] = useState(1)
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-   /*  useEffect(() => {
+
+   useEffect(() => {
       const fetchImage = async () => {
         try {
           setLoading(true);
@@ -40,7 +41,9 @@ export const ManageImages = () => {
   
       fetchImage();
     }, [])
-    console.log(data)  */
+
+    console.log(data)  
+   
     return (
     <div>
       <Modal>
@@ -54,18 +57,20 @@ export const ManageImages = () => {
        <ImageForm/>
       </Modal.Window>
       </Modal> 
-      <div className='grid grid-cols-4 border-black border-4 gap-2 h-[500px]'>
-      {imagesArray.map((item,index)=>(<div key={index} className='relative overflow-hidden' onClick={()=>{setSlide(item.id)
+      <div className='grid grid-cols-4 gap-2 h-[500px]'>
+      {data.map((item,index)=>(
+      <div key={index} className='relative overflow-hidden' onClick={()=>{setSlide(index+1)
       setToggler(!toggler)}}>
-        <img src={item.src} className='w-full h-full object-center'/>
+        <img src={item.file_path} className='w-full h-full object-center'/>
         </div>))}
       </div>
+      <FsLightbox sources={data.map(item=>(item.file_path))} type="image" toggler={toggler} slide={slide}/>
     </div>
   );
 };
 
 const ImageForm = ({onCloseModel})=>{
-  const [modalOpen, setModalOpen] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState("");
   const inputRef = useRef();
@@ -80,6 +85,7 @@ const ImageForm = ({onCloseModel})=>{
       file.append("file_upload", data.image[0]);
       file.append("name", data.name);
       file.append("description", data.description);
+      file.append("upload_name", data.uploadName);
 
       setLoading(true);
       const response = await imageUpload(file);
@@ -125,6 +131,14 @@ const ImageForm = ({onCloseModel})=>{
               ref={inputRef}
               {...register("description", { required: "This field required" })}
               error={errors?.description?.message}
+            />
+            <Input
+              label="UploadName"
+              name="uploadName"
+              type="text"
+              ref={inputRef}
+              {...register("uploadName", { required: "This field required" })}
+              error={errors?.uploadName?.message}
             />
             <Input
               label="Upload Image"
